@@ -1,7 +1,7 @@
 type ButtonLinkProps = {
   href: string
-  children: string
-  variant?: 'primary' | 'secondary'
+  children: React.ReactNode
+  variant?: 'primary' | 'secondary' | 'github' | 'linkedin'
   external?: boolean
 }
 

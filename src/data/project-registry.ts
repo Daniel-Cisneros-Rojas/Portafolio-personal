@@ -14,16 +14,16 @@ import libraryMd from '../../docs/projects/library-system.md?raw'
 import { parseProjectContent } from '../services/contentParser'
 
 const allProjects: Array<ProjectRecord | null> = [
-  parseProjectContent(recyclingPlatformMd),
-  parseProjectContent(hanziMd),
-  parseProjectContent(backendDotnetMd),
-  parseProjectContent(visual3dMd),
-  parseProjectContent(scheduleMd),
-  parseProjectContent(intrusionMd),
-  parseProjectContent(reviewMd),
-  parseProjectContent(breakoutMd),
-  parseProjectContent(spaceMd),
-  parseProjectContent(libraryMd),
+  parseProjectContent(recyclingPlatformMd, 'recycling-platform'),
+  parseProjectContent(hanziMd, 'hanzi-play-learn'),
+  parseProjectContent(backendDotnetMd, 'backend-dotnet'),
+  parseProjectContent(visual3dMd, 'visual-3d'),
+  parseProjectContent(scheduleMd, 'schedule-generator'),
+  parseProjectContent(intrusionMd, 'intrusion-system'),
+  parseProjectContent(reviewMd, 'review-system'),
+  parseProjectContent(breakoutMd, 'breakout-game'),
+  parseProjectContent(spaceMd, 'space-game'),
+  parseProjectContent(libraryMd, 'library-system'),
 ]
 
 export const featuredProjects = allProjects.filter(Boolean) as ProjectRecord[]
