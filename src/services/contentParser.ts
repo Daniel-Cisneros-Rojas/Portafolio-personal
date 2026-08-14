@@ -243,10 +243,10 @@ export function parseExperience(raw: string): ExperienceEntry[] {
   return blocks
     .map((block) => {
       const role = normalizeHeadingValue(block.match(/^##\s+(.*)$/m)?.[1])
-      const company = normalizeHeadingValue(block.match(/###\s*(?:Empresa|Institución)\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[1])
+      const company = normalizeHeadingValue(block.match(/###\s*(?:Empresa|Institución)\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
       const logoRaw = (block.match(/###\s*Logo\s*\n\n`?([^`\n]+)`?/) ?? block.match(/###\s*Logo\s*\n\n([^\n]+)/))?.[1]?.trim()
-      const period = normalizeHeadingValue(block.match(/###\s*Periodo\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[1])
-      const responsibilities = parseList(block.match(/###\s*Responsabilidades\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[1] || '')
+      const period = normalizeHeadingValue(block.match(/###\s*Periodo\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
+      const responsibilities = parseList(block.match(/###\s*Responsabilidades\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1] || '')
 
       return {
         role,
@@ -265,9 +265,9 @@ export function parseEducation(raw: string): EducationEntry[] {
   return blocks
     .map((block) => {
       const degree = normalizeHeadingValue(block.match(/^##\s+(.*)$/m)?.[1])
-      const institution = normalizeHeadingValue(block.match(/###\s*Institución\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[1])
-      const period = normalizeHeadingValue(block.match(/###\s*Periodo\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[1])
-      const area = normalizeHeadingValue(block.match(/###\s*Área\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[1])
+      const institution = normalizeHeadingValue(block.match(/###\s*Institución\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
+      const period = normalizeHeadingValue(block.match(/###\s*Periodo\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
+      const area = normalizeHeadingValue(block.match(/###\s*Área\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
 
       return { degree, institution, period, area: area || undefined }
     })
@@ -304,13 +304,13 @@ export function parseCourses(raw: string): CourseEntry[] {
 }
 
 export function parseAchievements(raw: string): AchievementEntry[] {
-  const blocks = normalizeLineEndings(raw).split(/(?=^##\s)/m).map((block) => block.trim()).filter(Boolean)
+  const blocks = normalizeLineEndings(raw).split(/(?=^##\s|^---\s*$)/m).map((block) => block.trim()).filter(Boolean)
 
   return blocks
     .map((block) => {
       const title = normalizeHeadingValue(block.match(/^##\s+(.*)$/m)?.[1])
-      const detailLabel = normalizeHeadingValue(block.match(/###\s*(Resultado|Participación)\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[2])
-      const year = normalizeHeadingValue(block.match(/###\s*Año\s*\n\n([\s\S]*?)(?=^###\s|^##\s|$)/m)?.[1])
+      const detailLabel = normalizeHeadingValue(block.match(/###\s*(Resultado|Participación)\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[2])
+      const year = normalizeHeadingValue(block.match(/###\s*Año\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
 
       return {
         title,
@@ -356,29 +356,30 @@ export function parseSocialLinks(raw: string): SocialLink[] {
 }
 
 export function parseProjectContent(raw: string, slugOverride?: string): ProjectRecord | null {
-  const name = normalizeHeadingValue(raw.match(/^#\s+(.*)$/m)?.[1])
+  const source = normalizeLineEndings(raw)
+  const name = normalizeHeadingValue(source.match(/^#\s+(.*)$/m)?.[1])
   if (!name) return null
 
-  const category = getSectionBlock(raw, 'Categoría')
+  const category = getSectionBlock(source, 'Categoría')
     .split('/')
     .map((item) => item.trim())
     .filter(Boolean)
 
-  const shortDescription = normalizeHeadingValue(getSectionBlock(raw, 'Descripción Corta'))
-  const description = normalizeHeadingValue(getSectionBlock(raw, 'Descripción')) || shortDescription
-  const features = parseList(getSectionBlock(raw, 'Características'))
-  const technologies = parseList(getSectionBlock(raw, 'Tecnologías')).map(toTechnologyObject)
-  const repository = (raw.match(/##\s*Repositorio\s*\n\n(https?:\/\/[^\s]+)/)?.[1] || '').trim() || undefined
-  const demo = (raw.match(/##\s*Demo\s*\n\n(https?:\/\/[^\s]+)/)?.[1] || '').trim() || undefined
-  const video = (raw.match(/##\s*Video\s*\n\n(https?:\/\/[^\s]+)/)?.[1] || '').trim() || undefined
-  const architecture = normalizeHeadingValue(getSectionBlock(raw, 'Arquitectura'))
-  const credentials = [...raw.matchAll(/##\s+Credenciales\s*\n\n([\s\S]*?)(?=^##\s|$)/gm)]
+  const shortDescription = normalizeHeadingValue(getSectionBlock(source, 'Descripción Corta'))
+  const description = normalizeHeadingValue(getSectionBlock(source, 'Descripción')) || shortDescription
+  const features = parseList(getSectionBlock(source, 'Características'))
+  const technologies = parseList(getSectionBlock(source, 'Tecnologías')).map(toTechnologyObject)
+  const repository = (source.match(/##\s*Repositorio\s*\n\s*(https?:\/\/[^\s]+)/)?.[1] || '').trim() || undefined
+  const demo = (source.match(/##\s*Demo\s*\n\s*(https?:\/\/[^\s]+)/)?.[1] || '').trim() || undefined
+  const video = (source.match(/##\s*Video\s*\n\s*(https?:\/\/[^\s]+)/)?.[1] || '').trim() || undefined
+  const architecture = normalizeHeadingValue(getSectionBlock(source, 'Arquitectura'))
+  const credentials = [...source.matchAll(/##\s+Credenciales\s*\n\s*([\s\S]*?)(?=\n##\s|$)/g)]
     .flatMap((match) => [...(match[1] || '').matchAll(/https?:\/\/[^\s]+/g)].map((urlMatch) => urlMatch[0]))
     .filter(Boolean)
 
-  const rawImages = parseProjectImageEntries(getSectionBlock(raw, 'Imágenes'), name)
+  const rawImages = parseProjectImageEntries(getSectionBlock(source, 'Imágenes'), name)
 
-  const sections = [...raw.matchAll(/^##\s+([^\n]+)\n\n([\s\S]*?)(?=^##\s|$)/gm)]
+  const sections = [...source.matchAll(/\n##\s+([^\n]+)\n\s*([\s\S]*?)(?=\n##\s|$)/g)]
     .map((match) => ({ heading: match[1].trim(), content: stripMarkdown(match[2].trim()) }))
     .filter(({ heading, content }) => heading && content)
     .filter(({ heading }) => !['Categoría', 'Tecnologías', 'Descripción Corta', 'Descripción', 'Características', 'Repositorio', 'Demo', 'Video', 'Arquitectura', 'Imágenes'].includes(heading))

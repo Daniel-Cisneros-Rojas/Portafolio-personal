@@ -109,9 +109,12 @@ export function HomePage() {
       </Section>
 
       <Section id="projects" eyebrow="Proyectos" title="Proyectos destacados">
-        <div className="project-grid">
-          {projects.slice(0, 6).map((project) => (
-            <article key={project.slug} className="project-card">
+        <div className="project-grid" id="project-grid">
+          {projects.map((project, index) => (
+            <article
+              key={project.slug}
+              className={`project-card${!expandedProjects && index >= 6 ? ' project-card-hidden' : ''}`}
+            >
               <div className="project-image-wrap">
                 <img src={project.images[0]?.src || resolveAssetPath('/images/projects/placeholder.png')} alt={project.name} />
               </div>
@@ -123,54 +126,39 @@ export function HomePage() {
                     <TechnologyBadge key={`${project.slug}-${technology.name}`} name={technology.name} />
                   ))}
                 </div>
-                <ButtonLink href={`/projects/${project.slug}`} variant="secondary">Ver proyecto</ButtonLink>
+                <div className="project-card-actions">
+                  <ButtonLink href={`/projects/${project.slug}`} variant="secondary">Ver proyecto</ButtonLink>
+                  {project.repository ? (
+                    <a
+                      href={project.repository}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="github-link"
+                      aria-label={`Ver repositorio de ${project.name} en GitHub`}
+                      title={`Repositorio de ${project.name}`}
+                    >
+                      <SocialIcon kind="github" />
+                    </a>
+                  ) : null}
+                </div>
               </div>
             </article>
           ))}
-          {!expandedProjects && projects.length > 6 && (
-            <article className="project-card project-card-expand">
-              <button
-                onClick={() => setExpandedProjects(true)}
-                className="expand-button"
-                aria-label="Ver más proyectos"
-              >
-                <span className="expand-icon" aria-hidden="true">→</span>
-                <span>Ver más</span>
-              </button>
-            </article>
-          )}
         </div>
-        {expandedProjects && projects.length > 6 && (
-          <div className="project-grid">
-            {projects.slice(6).map((project) => (
-              <article key={project.slug} className="project-card">
-                <div className="project-image-wrap">
-                  <img src={project.images[0]?.src || resolveAssetPath('/images/projects/placeholder.png')} alt={project.name} />
-                </div>
-                <div className="project-body">
-                  <h3>{project.name}</h3>
-                  <p>{project.shortDescription}</p>
-                  <div className="technology-list">
-                    {project.technologies.slice(0, 4).map((technology) => (
-                      <TechnologyBadge key={`${project.slug}-${technology.name}`} name={technology.name} />
-                    ))}
-                  </div>
-                  <ButtonLink href={`/projects/${project.slug}`} variant="secondary">Ver proyecto</ButtonLink>
-                </div>
-              </article>
-            ))}
-            <article className="project-card project-card-collapse">
-              <button
-                onClick={() => setExpandedProjects(false)}
-                className="collapse-button"
-                aria-label="Ver menos proyectos"
-              >
-                <span className="collapse-icon" aria-hidden="true">↑</span>
-                <span>Ver menos</span>
-              </button>
-            </article>
+        {projects.length > 6 ? (
+          <div className="project-toggle-row">
+            <button
+              type="button"
+              onClick={() => setExpandedProjects((prev) => !prev)}
+              className="expand-button"
+              aria-expanded={expandedProjects}
+              aria-controls="project-grid"
+            >
+              <span className="expand-icon" aria-hidden="true">{expandedProjects ? '↑' : '→'}</span>
+              <span>{expandedProjects ? 'Ver menos' : 'Ver más'}</span>
+            </button>
           </div>
-        )}
+        ) : null}
       </Section>
 
       <Section id="experience" eyebrow="Experiencia" title="Trayectoria profesional">
