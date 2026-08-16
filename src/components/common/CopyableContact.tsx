@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { UI_TEXT } from '../../config/ui'
 
 type CopyableContactProps = {
   href: string
@@ -40,8 +41,8 @@ export function CopyableContact({ href, icon, label, displayValue, copyValue, is
           <small>{displayValue}</small>
         </span>
       </a>
-      <button onClick={handleCopy} className="contact-copy-button" title={`Copiar ${label}`} aria-label={`Copiar ${label}`}>
-        {copied ? '✓ Copiado' : 'Copiar'}
+      <button onClick={handleCopy} className="contact-copy-button" title={UI_TEXT.contact.copyTitle(label)} aria-label={UI_TEXT.contact.copyTitle(label)}>
+        {copied ? UI_TEXT.contact.copied : UI_TEXT.contact.copy}
       </button>
     </div>
   )

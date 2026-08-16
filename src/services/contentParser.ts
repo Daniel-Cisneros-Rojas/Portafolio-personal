@@ -173,14 +173,14 @@ const normalizeImageReference = (value: string): string => {
   return `/${cleaned.replace(/^\/+/, '')}`
 }
 
-const parseProjectImageEntries = (section: string, fallbackName: string): ProjectImage[] => {
+const parseProjectImagePaths = (section: string): string[] => {
   const normalizedSection = normalizeLineEndings(section)
   const candidates = parseList(normalizedSection)
     .map((item) => normalizeImageReference(item))
     .filter(Boolean)
 
   if (candidates.length > 0) {
-    return candidates.map((imagePath) => toProjectImage(imagePath, fallbackName))
+    return candidates
   }
 
   const fallbackMatches = [...normalizedSection.matchAll(/(?:!\[[^\]]*\]\()?(?:`)?((?:https?:\/\/|\/|\.\.?\/)?(?:images\/|docs\/images\/)?[A-Za-z0-9._\-/]+\.(?:png|jpe?g|webp|svg))(?:`)?(?:\))?/gi)]
@@ -188,13 +188,71 @@ const parseProjectImageEntries = (section: string, fallbackName: string): Projec
     .map((match) => normalizeImageReference(match[1] || ''))
     .filter(Boolean)
 
-  return fallbackPaths.length > 0 ? fallbackPaths.map((imagePath) => toProjectImage(imagePath, fallbackName)) : []
+  return fallbackPaths
 }
 
 const toProjectImage = (imagePath: string, fallbackName?: string): ProjectImage => ({
   src: resolveAssetPath(imagePath),
   alt: fallbackName ? `${fallbackName} visual` : 'Proyecto',
 })
+
+const EXCLUDED_PROJECT_SECTIONS = [
+  'Categoría',
+  'Tecnologías',
+  'Descripción Corta',
+  'Descripción',
+  'Características',
+  'Repositorio',
+  'Demo',
+  'Video',
+  'Arquitectura',
+  'Imágenes',
+]
+
+const normalizeMatchKey = (value: string): string =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+const IMAGE_SECTION_SYNONYMS: Record<string, string> = {
+  architecture: 'arquitectura',
+  api: 'arquitectura',
+  classification: 'machine learning',
+  rewards: 'gamificacion',
+}
+
+type SectionAnchor = {
+  key: string
+  names: string[]
+}
+
+const matchImageToSection = (keyword: string, anchors: SectionAnchor[]): string | null => {
+  for (const anchor of anchors) {
+    if (
+      anchor.names.some(
+        (name) => name === keyword || (keyword.length > 3 && (name.includes(keyword) || keyword.includes(name))),
+      )
+    ) {
+      return anchor.key
+    }
+  }
+
+  const synonymTarget = IMAGE_SECTION_SYNONYMS[keyword]
+  if (synonymTarget) {
+    const anchor = anchors.find((candidate) => candidate.names.some((name) => name === synonymTarget))
+    if (anchor) {
+      return anchor.key
+    }
+  }
+
+  return null
+}
+
+const ARCHITECTURE_ANCHOR_KEY = '__architecture'
 
 export function parseProfile(raw: string): ProfileContent {
   const source = normalizeLineEndings(raw)
@@ -268,8 +326,9 @@ export function parseEducation(raw: string): EducationEntry[] {
       const institution = normalizeHeadingValue(block.match(/###\s*Institución\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
       const period = normalizeHeadingValue(block.match(/###\s*Periodo\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
       const area = normalizeHeadingValue(block.match(/###\s*Área\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
+      const logoRaw = (block.match(/###\s*Logo\s*\n\n`?([^`\n]+)`?/) ?? block.match(/###\s*Logo\s*\n\n([^\n]+)/))?.[1]?.trim()
 
-      return { degree, institution, period, area: area || undefined }
+      return { degree, institution, period, area: area || undefined, logo: logoRaw ? resolveAssetPath(logoRaw) : undefined }
     })
     .filter((entry) => Boolean(entry.degree))
 }
@@ -377,13 +436,42 @@ export function parseProjectContent(raw: string, slugOverride?: string): Project
     .flatMap((match) => [...(match[1] || '').matchAll(/https?:\/\/[^\s]+/g)].map((urlMatch) => urlMatch[0]))
     .filter(Boolean)
 
-  const rawImages = parseProjectImageEntries(getSectionBlock(source, 'Imágenes'), name)
+  const rawImagePaths = parseProjectImagePaths(getSectionBlock(source, 'Imágenes'))
+  const images = rawImagePaths.map((imagePath) => toProjectImage(imagePath, name))
 
-  const sections = [...source.matchAll(/\n##\s+([^\n]+)\n\s*([\s\S]*?)(?=\n##\s|$)/g)]
-    .map((match) => ({ heading: match[1].trim(), content: stripMarkdown(match[2].trim()) }))
-    .filter(({ heading, content }) => heading && content)
-    .filter(({ heading }) => !['Categoría', 'Tecnologías', 'Descripción Corta', 'Descripción', 'Características', 'Repositorio', 'Demo', 'Video', 'Arquitectura', 'Imágenes'].includes(heading))
-    .map(({ heading, content }) => ({ heading, content })) satisfies ProjectSection[]
+  const sectionCandidates = [...source.matchAll(/\n##\s+([^\n]+)\n([\s\S]*?)(?=\n##\s|$)/g)]
+    .map((match) => ({ heading: match[1].trim(), rawContent: match[2].trim() }))
+    .filter(({ heading, rawContent }) => heading && rawContent)
+    .filter(({ heading }) => !EXCLUDED_PROJECT_SECTIONS.includes(heading))
+
+  const sections: ProjectSection[] = sectionCandidates.map(({ heading, rawContent }) => ({
+    heading,
+    content: stripMarkdown(rawContent),
+    images: [],
+  }))
+
+  const anchors: SectionAnchor[] = []
+  if (architecture) {
+    anchors.push({ key: ARCHITECTURE_ANCHOR_KEY, names: ['arquitectura'] })
+  }
+  for (const candidate of sectionCandidates) {
+    const subHeadings = [...candidate.rawContent.matchAll(/^###\s+(.+?)\s*$/gm)].map((match) => match[1].trim())
+    anchors.push({ key: candidate.heading, names: [candidate.heading, ...subHeadings].map(normalizeMatchKey) })
+  }
+
+  const architectureImages: ProjectImage[] = []
+  for (let index = 1; index < images.length; index++) {
+    const rawPath = rawImagePaths[index]
+    const fileName = (rawPath.split('/').pop() || '').replace(/\.(png|jpe?g|webp|svg)$/i, '')
+    const keyword = normalizeMatchKey(fileName)
+    const targetKey = matchImageToSection(keyword, anchors)
+
+    if (targetKey === ARCHITECTURE_ANCHOR_KEY) {
+      architectureImages.push(images[index])
+    } else if (targetKey) {
+      sections.find((section) => section.heading === targetKey)?.images?.push(images[index])
+    }
+  }
 
   const slug = (slugOverride || name)
     .trim()
@@ -409,7 +497,8 @@ export function parseProjectContent(raw: string, slugOverride?: string): Project
     demo,
     video,
     architecture: architecture || undefined,
-    images: rawImages,
+    images,
+    architectureImages: architectureImages.length ? architectureImages : undefined,
     credentials: credentials.length ? credentials : undefined,
     sections: sections.length ? sections : undefined,
     featured: [

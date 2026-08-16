@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { projectBySlug } from '../content/projects'
 import { TechnologyBadge } from '../components/skills/TechnologyBadge'
 import { resolveAssetPath } from '../services/assetResolver'
+import { UI_TEXT } from '../config/ui'
 
 function GitHubProjectIcon() {
   return (
@@ -18,17 +19,23 @@ export function ProjectPage() {
   if (!project) {
     return (
       <main className="page-shell narrow">
-        <h1>Proyecto no encontrado</h1>
-        <Link to="/">Volver al inicio</Link>
+        <h1>{UI_TEXT.projectPage.notFoundTitle}</h1>
+        <Link to="/">{UI_TEXT.notFound.backToHome}</Link>
       </main>
     )
   }
 
-  const coverImage = project.images.length > 0 ? project.images[0].src : '/images/projects/placeholder.png'
+  const coverImage = project.images.length > 0 ? project.images[0].src : UI_TEXT.projects.placeholderImagePath
+
+  const matchedImages = [
+    ...(project.architectureImages ?? []),
+    ...(project.sections?.flatMap((section) => section.images ?? []) ?? []),
+  ]
+  const galleryImages = project.images.slice(1).filter((image) => !matchedImages.includes(image))
 
   return (
     <main className="page-shell narrow">
-      <Link to="/" className="back-link">← Volver</Link>
+      <Link to="/" className="back-link">{UI_TEXT.projectPage.back}</Link>
       <header className="project-header">
         <h1>{project.name}</h1>
         <div className="project-tags">
@@ -42,21 +49,21 @@ export function ProjectPage() {
 
       {project.shortDescription ? (
         <section>
-          <h2>Resumen</h2>
+          <h2>{UI_TEXT.projectPage.sections.summary}</h2>
           <p>{project.shortDescription}</p>
         </section>
       ) : null}
 
       {project.description ? (
         <section>
-          <h2>Descripción</h2>
+          <h2>{UI_TEXT.projectPage.sections.description}</h2>
           <p>{project.description}</p>
         </section>
       ) : null}
 
       {project.features.length > 0 ? (
         <section>
-          <h2>Características</h2>
+          <h2>{UI_TEXT.projectPage.sections.features}</h2>
           <ul>
             {project.features.map((feature) => (
               <li key={feature}>{feature}</li>
@@ -67,17 +74,31 @@ export function ProjectPage() {
 
       {project.architecture ? (
         <section>
-          <h2>Arquitectura</h2>
+          <h2>{UI_TEXT.projectPage.sections.architecture}</h2>
           <p>{project.architecture}</p>
+          {project.architectureImages && project.architectureImages.length > 0 ? (
+            <div className="section-image-grid">
+              {project.architectureImages.map((image) => (
+                <img key={image.src} src={image.src} alt={image.alt ?? UI_TEXT.projectPage.sections.architecture} className="section-image" />
+              ))}
+            </div>
+          ) : null}
         </section>
       ) : null}
 
       {project.sections && project.sections.length > 0 ? (
         <section>
           {project.sections.map((section) => (
-            <div key={`${project.slug}-${section.heading}`}>
+            <div key={`${project.slug}-${section.heading}`} className="project-section">
               <h2>{section.heading}</h2>
               <p>{section.content}</p>
+              {section.images && section.images.length > 0 ? (
+                <div className="section-image-grid">
+                  {section.images.map((image) => (
+                    <img key={image.src} src={image.src} alt={image.alt ?? section.heading} className="section-image" />
+                  ))}
+                </div>
+              ) : null}
             </div>
           ))}
         </section>
@@ -85,7 +106,7 @@ export function ProjectPage() {
 
       {project.technologies.length > 0 ? (
         <section>
-          <h2>Tecnologías</h2>
+          <h2>{UI_TEXT.projectPage.sections.technologies}</h2>
           <div className="technology-list">
             {project.technologies.map((technology) => (
               <TechnologyBadge key={`${project.slug}-${technology.name}`} name={technology.name} />
@@ -96,31 +117,31 @@ export function ProjectPage() {
 
       {project.repository ? (
         <section>
-          <h2>Repositorio</h2>
+          <h2>{UI_TEXT.projectPage.sections.repository}</h2>
           <a className="button-link github" href={project.repository} target="_blank" rel="noreferrer">
             <GitHubProjectIcon />
-            <span>Ver repositorio</span>
+            <span>{UI_TEXT.projectPage.sections.viewRepository}</span>
           </a>
         </section>
       ) : null}
 
       {project.demo ? (
         <section>
-          <h2>Demo</h2>
+          <h2>{UI_TEXT.projectPage.sections.demo}</h2>
           <a href={project.demo} target="_blank" rel="noreferrer">{project.demo}</a>
         </section>
       ) : null}
 
       {project.video ? (
         <section>
-          <h2>Video</h2>
+          <h2>{UI_TEXT.projectPage.sections.video}</h2>
           <a href={project.video} target="_blank" rel="noreferrer">{project.video}</a>
         </section>
       ) : null}
 
       {project.credentials && project.credentials.length > 0 ? (
         <section>
-          <h2>Credenciales</h2>
+          <h2>{UI_TEXT.projectPage.sections.credentials}</h2>
           <ul>
             {project.credentials.map((credential) => (
               <li key={credential}><a href={credential} target="_blank" rel="noreferrer">{credential}</a></li>
@@ -129,12 +150,12 @@ export function ProjectPage() {
         </section>
       ) : null}
 
-      {project.images.length > 1 ? (
+      {galleryImages.length > 0 ? (
         <section>
-          <h2>Imágenes</h2>
+          <h2>{UI_TEXT.projectPage.sections.images}</h2>
           <div className="gallery-grid">
-            {project.images.slice(1).map((image) => (
-              <img key={`${project.slug}-${image.src}`} src={resolveAssetPath(image.src)} alt={image.alt ?? `${project.name} detalle`} className="gallery-image" />
+            {galleryImages.map((image) => (
+              <img key={image.src} src={image.src} alt={image.alt ?? UI_TEXT.projectPage.imageAlt(project.name)} className="gallery-image" />
             ))}
           </div>
         </section>

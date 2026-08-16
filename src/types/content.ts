@@ -43,6 +43,7 @@ export type EducationEntry = {
   institution: string
   period: string
   area?: string
+  logo?: string
 }
 
 export type CourseEntry = {
@@ -69,6 +70,7 @@ export type ProjectImage = {
 export type ProjectSection = {
   heading: string
   content: string
+  images?: ProjectImage[]
 }
 
 export type Project = {
@@ -86,6 +88,7 @@ export type Project = {
   video?: string
   architecture?: string
   images: ProjectImage[]
+  architectureImages?: ProjectImage[]
   credentials?: string[]
   sections?: ProjectSection[]
   featured?: boolean

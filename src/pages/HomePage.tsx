@@ -12,19 +12,29 @@ import { profileSummary } from '../content/profile'
 import { projects } from '../content/projects'
 import { skills } from '../content/skills'
 import { resolveAssetPath } from '../services/assetResolver'
+import { UI_TEXT } from '../config/ui'
+
+type HeroVariant = 'primary' | 'secondary' | 'github' | 'linkedin'
+
+type HeroLink = {
+  href: string
+  label: string
+  variant: HeroVariant
+  external: boolean
+}
 
 function SocialIcon({ kind }: { kind: 'github' | 'linkedin' }) {
   if (kind === 'github') {
     return (
       <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="social-icon">
-        <path d="M12 2C6.477 2 2 6.582 2 12.253c0 4.53 2.865 8.372 6.839 9.726.5.093.682-.217.682-.482 0-.236-.008-.861-.014-1.69-2.782.609-3.369-1.343-3.369-1.343-.455-1.165-1.112-1.475-1.112-1.475-.91-.626.069-.614.069-.614 1.006.072 1.536 1.038 1.536 1.038.894 1.54 2.342 1.095 2.914.838.091-.651.35-1.094.636-1.345-2.221-.255-4.557-1.118-4.557-4.976 0-1.1.39-1.997 1.03-2.696-.103-.255-.447-1.283.098-2.673 0 0 .842-.272 2.757 1.033A9.52 9.52 0 0 1 12 6.8c.852.004 1.71.116 2.513.34 1.913-1.305 2.753-1.033 2.753-1.033.547 1.39.202 2.418.099 2.673.642.699 1.028 1.596 1.028 2.696 0 3.867-2.338 4.718-4.567 4.968.359.31.678.92.678 1.853 0 1.338-.012 2.416-.012 2.748 0 .269.179.583.689.484A10.25 10.25 0 0 0 22 12.253C22 6.582 17.523 2 12 2Z" fill="currentColor"/>
+        <path d="M12 2C6.477 2 2 6.582 2 12.253c0 4.53 2.865 8.372 6.839 9.726.5.093.682-.217.682-.482 0-.236-.008-.861-.014-1.69-2.782.609-3.369-1.343-3.369-1.343-.455-1.165-1.112-1.475-1.112-1.475-.91-.626.069-.614.069-.614 1.006.072 1.536 1.038 1.536 1.038.894 1.54 2.342 1.095 2.914.838.091-.651.35-1.094.636-1.345-2.221-.255-4.557-1.118-4.557-4.976 0-1.1.39-1.997 1.03-2.696-.103-.255-.447-1.283.098-2.673 0 0 .842-.272 2.757 1.033A9.52 9.52 0 0 1 12 6.8c.852.004 1.71.116 2.513.34 1.913-1.305 2.753-1.033 2.753-1.033.547 1.39.202 2.418.099 2.673.642.699 1.028 1.596 1.028 2.696 0 3.867-2.338 4.718-4.567 4.968.359.31.678.92.678 1.853 0 1.338-.012 2.416-.012 2.748 0 .269.179.583.689.484A10.25 10.25 0 0 0 22 12.253C22 6.582 17.523 2 12 2Z" fill="currentColor" />
       </svg>
     )
   }
 
   return (
     <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true" className="social-icon">
-      <path d="M6.94 8.5A2.5 2.5 0 1 1 6.94 3.5a2.5 2.5 0 0 1 0 5Zm-2.02 1.8h4.04V20H4.92V10.3Zm7.26 0h3.88v1.3h.06c.54-.99 1.86-2.03 3.82-2.03 4.08 0 4.83 2.68 4.83 6.16V20h-4.04v-18.7c0-1.8-.03-4.12-2.52-4.12-2.52 0-2.9 1.97-2.9 3.98V20h-4.05V10.3Z" fill="currentColor"/>
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" fill="currentColor" />
     </svg>
   )
 }
@@ -32,37 +42,32 @@ function SocialIcon({ kind }: { kind: 'github' | 'linkedin' }) {
 export function HomePage() {
   const [expandedProjects, setExpandedProjects] = useState(false)
 
-  const heroLinks: Array<{
-    href: string
-    label: string
-    variant: 'primary' | 'secondary' | 'github' | 'linkedin'
-    external: boolean
-  }> = [
-    { href: '/cv/Daniel_Cisneros_Rojas_CV_Resume_ESP.pdf', label: 'Ver CV en español', variant: 'primary', external: true },
-    { href: '/cv/Daniel_Cisneros_Rojas_CV_Resume_ENG.pdf', label: 'View CV in English', variant: 'secondary', external: true },
-    { href: personal.github, label: 'GitHub', variant: 'github', external: true },
-    { href: personal.linkedin, label: 'LinkedIn', variant: 'linkedin', external: true },
-  ].filter((link): link is { href: string; label: string; variant: 'primary' | 'secondary' | 'github' | 'linkedin'; external: boolean } => Boolean(link.href))
+  const heroLinkEntries: HeroLink[] = [
+    { ...UI_TEXT.hero.actions.cvSpanish, external: true },
+    { ...UI_TEXT.hero.actions.cvEnglish, external: true },
+    { href: personal.github, label: UI_TEXT.hero.actions.githubLabel, variant: 'github', external: true },
+    { href: personal.linkedin, label: UI_TEXT.hero.actions.linkedinLabel, variant: 'linkedin', external: true },
+  ]
+  const heroLinks = heroLinkEntries.filter((link) => Boolean(link.href))
 
   return (
     <main className="page-shell">
       <header className="topbar">
         <div className="brand-wrap">
           <span className="brand-mark">DC</span>
-          <span className="brand-name">Daniel Cisneros</span>
+          <span className="brand-name">{personal.name}</span>
         </div>
 
-        <nav aria-label="Navegación principal" className="main-nav">
-          <a href="#projects">Proyectos</a>
-          <a href="#experience">Experiencia</a>
-          <a href="#education">Educación</a>
-          <a href="#contact">Contacto</a>
+        <nav aria-label={UI_TEXT.navigation.ariaLabel} className="main-nav">
+          {UI_TEXT.navigation.links.map((link) => (
+            <a key={link.href} href={link.href}>{link.label}</a>
+          ))}
         </nav>
       </header>
 
       <section className="hero-section" id="home">
         <div className="hero-copy">
-          <p className="eyebrow">Desarrollador de software</p>
+          <p className="eyebrow">{UI_TEXT.hero.eyebrow}</p>
           <h1>{personal.name}</h1>
           <p className="headline">{personal.title}</p>
           <p className="lead">{profileSummary}</p>
@@ -93,7 +98,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <Section id="skills" eyebrow="Skills" title="Tecnologías y competencias">
+      <Section id="skills" eyebrow={UI_TEXT.sections.skills.eyebrow} title={UI_TEXT.sections.skills.title}>
         <div className="skills-groups">
           {skills.map((group) => (
             <div key={group.title} className="skill-group">
@@ -108,7 +113,7 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section id="projects" eyebrow="Proyectos" title="Proyectos destacados">
+      <Section id="projects" eyebrow={UI_TEXT.sections.projects.eyebrow} title={UI_TEXT.sections.projects.title}>
         <div className="project-grid" id="project-grid">
           {projects.map((project, index) => (
             <article
@@ -116,7 +121,7 @@ export function HomePage() {
               className={`project-card${!expandedProjects && index >= 6 ? ' project-card-hidden' : ''}`}
             >
               <div className="project-image-wrap">
-                <img src={project.images[0]?.src || resolveAssetPath('/images/projects/placeholder.png')} alt={project.name} />
+                <img src={project.images[0]?.src || resolveAssetPath(UI_TEXT.projects.placeholderImagePath)} alt={project.name} />
               </div>
               <div className="project-body">
                 <h3>{project.name}</h3>
@@ -127,15 +132,15 @@ export function HomePage() {
                   ))}
                 </div>
                 <div className="project-card-actions">
-                  <ButtonLink href={`/projects/${project.slug}`} variant="secondary">Ver proyecto</ButtonLink>
+                  <ButtonLink href={`/projects/${project.slug}`} variant="secondary">{UI_TEXT.projects.viewProject}</ButtonLink>
                   {project.repository ? (
                     <a
                       href={project.repository}
                       target="_blank"
                       rel="noreferrer"
                       className="github-link"
-                      aria-label={`Ver repositorio de ${project.name} en GitHub`}
-                      title={`Repositorio de ${project.name}`}
+                      aria-label={UI_TEXT.projects.githubRepositoryAriaLabel(project.name)}
+                      title={UI_TEXT.projects.githubRepositoryTitle(project.name)}
                     >
                       <SocialIcon kind="github" />
                     </a>
@@ -155,13 +160,13 @@ export function HomePage() {
               aria-controls="project-grid"
             >
               <span className="expand-icon" aria-hidden="true">{expandedProjects ? '↑' : '→'}</span>
-              <span>{expandedProjects ? 'Ver menos' : 'Ver más'}</span>
+              <span>{expandedProjects ? UI_TEXT.projects.showLess : UI_TEXT.projects.showMore}</span>
             </button>
           </div>
         ) : null}
       </Section>
 
-      <Section id="experience" eyebrow="Experiencia" title="Trayectoria profesional">
+      <Section id="experience" eyebrow={UI_TEXT.sections.experience.eyebrow} title={UI_TEXT.sections.experience.title}>
         <div className="timeline">
           {experience.map((entry) => (
             <article key={`${entry.company}-${entry.role}`} className="timeline-item">
@@ -187,20 +192,23 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section id="education" eyebrow="Formación" title="Educación">
+      <Section id="education" eyebrow={UI_TEXT.sections.education.eyebrow} title={UI_TEXT.sections.education.title}>
         <div className="info-list">
           {education.map((entry) => (
-            <article key={`${entry.degree}-${entry.institution}`} className="info-card">
-              <h3>{entry.degree}</h3>
-              <p>{entry.institution}</p>
-              <p>{entry.period}</p>
-              <p>{entry.area}</p>
+            <article key={`${entry.degree}-${entry.institution}`} className="info-card education-card">
+              <div className="education-card-content">
+                <h3>{entry.degree}</h3>
+                <p>{entry.institution}</p>
+                <p>{entry.period}</p>
+                <p>{entry.area}</p>
+              </div>
+              {entry.logo ? <img className="education-logo" src={entry.logo} alt={entry.institution} /> : null}
             </article>
           ))}
         </div>
       </Section>
 
-      <Section id="courses" eyebrow="Cursos" title="Formación complementaria">
+      <Section id="courses" eyebrow={UI_TEXT.sections.courses.eyebrow} title={UI_TEXT.sections.courses.title}>
         <div className="course-grid">
           {courses
             .filter((course) => course.title || course.institution || course.type || course.badge || course.credential || course.verification)
@@ -213,7 +221,7 @@ export function HomePage() {
                 {course.verification ? (
                   <a className="course-verification" href={course.verification} target="_blank" rel="noreferrer">
                     <span className="verification-icon" aria-hidden="true">✓</span>
-                    <span>Verificación</span>
+                    <span>{UI_TEXT.courses.verification}</span>
                   </a>
                 ) : null}
               </article>
@@ -221,7 +229,7 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section id="achievements" eyebrow="Logros" title="Participaciones y reconocimientos">
+      <Section id="achievements" eyebrow={UI_TEXT.sections.achievements.eyebrow} title={UI_TEXT.sections.achievements.title}>
         <div className="achievement-grid">
           {achievements.map((achievement) => (
             <article key={`${achievement.title}-${achievement.year ?? 'sin-año'}`} className="achievement-item">
@@ -233,13 +241,13 @@ export function HomePage() {
         </div>
       </Section>
 
-      <Section id="contact" eyebrow="Contacto" title="Hablemos">
+      <Section id="contact" eyebrow={UI_TEXT.sections.contact.eyebrow} title={UI_TEXT.sections.contact.title}>
         <div className="contact-list">
           {personal.email ? (
             <CopyableContact
               href={`mailto:${personal.email}`}
               icon={<span>✉</span>}
-              label="Email"
+              label={UI_TEXT.contact.email}
               displayValue={personal.email}
               copyValue={personal.email}
             />
@@ -248,7 +256,7 @@ export function HomePage() {
             <CopyableContact
               href={`tel:${personal.phone}`}
               icon={<span>☎</span>}
-              label="Teléfono"
+              label={UI_TEXT.contact.phone}
               displayValue={personal.phone}
               copyValue={personal.phone}
             />
@@ -257,7 +265,7 @@ export function HomePage() {
             <a href={personal.linkedin} target="_blank" rel="noreferrer" className="contact-item social-contact linkedin-contact">
               <span className="contact-icon" aria-hidden="true"><SocialIcon kind="linkedin" /></span>
               <span>
-                <strong>LinkedIn</strong>
+                <strong>{UI_TEXT.contact.linkedin}</strong>
                 <small>{personal.linkedin.replace('https://', '').replace('http://', '')}</small>
               </span>
             </a>
@@ -266,7 +274,7 @@ export function HomePage() {
             <a href={personal.github} target="_blank" rel="noreferrer" className="contact-item social-contact github-contact">
               <span className="contact-icon" aria-hidden="true"><SocialIcon kind="github" /></span>
               <span>
-                <strong>GitHub</strong>
+                <strong>{UI_TEXT.contact.github}</strong>
                 <small>{personal.github.replace('https://', '').replace('http://', '')}</small>
               </span>
             </a>

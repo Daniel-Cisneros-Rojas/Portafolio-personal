@@ -17,8 +17,9 @@ export type ProjectRecord = {
   video?: string
   architecture?: string
   images: Array<{ src: string; alt?: string }>
+  architectureImages?: Array<{ src: string; alt?: string }>
   credentials?: string[]
-  sections?: Array<{ heading: string; content: string }>
+  sections?: Array<{ heading: string; content: string; images?: Array<{ src: string; alt?: string }> }>
   featured?: boolean
 }
 
