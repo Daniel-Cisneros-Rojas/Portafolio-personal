@@ -62,6 +62,7 @@ main {
   flex-direction: column;
   gap: var(--space-2);
   margin-bottom: var(--space-8);
+  scroll-margin-top: var(--space-6);
 }
 
 .section-eyebrow {
@@ -542,6 +543,21 @@ main {
   color: var(--color-primary);
 }
 
+.contact-panel {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.contact-intro {
+  color: var(--color-muted);
+  max-width: 65ch;
+}
+
 .contact-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -559,6 +575,14 @@ main {
   background: var(--color-surface);
   text-decoration: none;
   color: var(--color-foreground);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.contact-item:hover,
+.contact-item:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-soft);
 }
 
 .contact-item > .contact-icon {
@@ -653,8 +677,10 @@ main {
   background: transparent;
   padding: 0.8rem 0.85rem;
   color: var(--color-foreground);
-  font-weight: 600;
-  font-size: 0.75rem;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-align: center;
   white-space: nowrap;
   cursor: pointer;
@@ -664,6 +690,7 @@ main {
 
 .contact-copy-button:hover {
   background: var(--color-surface-elevated);
+  color: var(--color-primary);
 }
 
 .contact-copy-button:focus-visible {
@@ -866,6 +893,10 @@ main {
 
   .contact-item-wrapper {
     flex-direction: column;
+  }
+
+  .contact-panel {
+    padding: var(--space-5);
   }
 
   .contact-item-wrapper .contact-copy-button {

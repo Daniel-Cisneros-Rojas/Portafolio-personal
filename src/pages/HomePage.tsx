@@ -39,6 +39,23 @@ function SocialIcon({ kind }: { kind: 'github' | 'linkedin' }) {
   )
 }
 
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </svg>
+  )
+}
+
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  )
+}
+
 export function HomePage() {
   const [expandedProjects, setExpandedProjects] = useState(false)
 
@@ -242,43 +259,46 @@ export function HomePage() {
       </Section>
 
       <Section id="contact" eyebrow={UI_TEXT.sections.contact.eyebrow} title={UI_TEXT.sections.contact.title}>
-        <div className="contact-list">
-          {personal.email ? (
-            <CopyableContact
-              href={`mailto:${personal.email}`}
-              icon={<span>✉</span>}
-              label={UI_TEXT.contact.email}
-              displayValue={personal.email}
-              copyValue={personal.email}
-            />
-          ) : null}
-          {personal.phone ? (
-            <CopyableContact
-              href={`tel:${personal.phone}`}
-              icon={<span>☎</span>}
-              label={UI_TEXT.contact.phone}
-              displayValue={personal.phone}
-              copyValue={personal.phone}
-            />
-          ) : null}
-          {personal.linkedin ? (
-            <a href={personal.linkedin} target="_blank" rel="noreferrer" className="contact-item social-contact linkedin-contact">
-              <span className="contact-icon" aria-hidden="true"><SocialIcon kind="linkedin" /></span>
-              <span>
-                <strong>{UI_TEXT.contact.linkedin}</strong>
-                <small>{personal.linkedin.replace('https://', '').replace('http://', '')}</small>
-              </span>
-            </a>
-          ) : null}
-          {personal.github ? (
-            <a href={personal.github} target="_blank" rel="noreferrer" className="contact-item social-contact github-contact">
-              <span className="contact-icon" aria-hidden="true"><SocialIcon kind="github" /></span>
-              <span>
-                <strong>{UI_TEXT.contact.github}</strong>
-                <small>{personal.github.replace('https://', '').replace('http://', '')}</small>
-              </span>
-            </a>
-          ) : null}
+        <div className="contact-panel">
+          <p className="contact-intro">{UI_TEXT.contact.intro}</p>
+          <div className="contact-list">
+            {personal.email ? (
+              <CopyableContact
+                href={`mailto:${personal.email}`}
+                icon={<MailIcon />}
+                label={UI_TEXT.contact.email}
+                displayValue={personal.email}
+                copyValue={personal.email}
+              />
+            ) : null}
+            {personal.phone ? (
+              <CopyableContact
+                href={`tel:${personal.phone}`}
+                icon={<PhoneIcon />}
+                label={UI_TEXT.contact.phone}
+                displayValue={personal.phone}
+                copyValue={personal.phone}
+              />
+            ) : null}
+            {personal.linkedin ? (
+              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="contact-item social-contact linkedin-contact">
+                <span className="contact-icon" aria-hidden="true"><SocialIcon kind="linkedin" /></span>
+                <span>
+                  <strong>{UI_TEXT.contact.linkedin}</strong>
+                  <small>{personal.linkedin.replace('https://', '').replace('http://', '')}</small>
+                </span>
+              </a>
+            ) : null}
+            {personal.github ? (
+              <a href={personal.github} target="_blank" rel="noreferrer" className="contact-item social-contact github-contact">
+                <span className="contact-icon" aria-hidden="true"><SocialIcon kind="github" /></span>
+                <span>
+                  <strong>{UI_TEXT.contact.github}</strong>
+                  <small>{personal.github.replace('https://', '').replace('http://', '')}</small>
+                </span>
+              </a>
+            ) : null}
+          </div>
         </div>
       </Section>
     </main>

@@ -10,9 +10,9 @@ type SectionProps = {
 
 export function Section({ id, eyebrow, title, children, className = '' }: SectionProps) {
   return (
-    <section id={id} className={`section ${className}`.trim()}>
+    <section className={`section ${className}`.trim()}>
       {(eyebrow || title) && (
-        <div className="section-heading">
+        <div id={id} className="section-heading">
           {eyebrow ? <p className="section-eyebrow">{eyebrow}</p> : null}
           {title ? <h2>{title}</h2> : null}
         </div>

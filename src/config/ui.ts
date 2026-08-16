@@ -45,6 +45,7 @@ export const UI_TEXT = {
     copy: 'Copiar',
     copied: '✓ Copiado',
     copyTitle: (label: string) => `Copiar ${label}`,
+    intro: '¿Tienes un proyecto en mente o te gustaría colaborar? Escríbeme por cualquiera de estos medios.',
   },
   projectPage: {
     back: '← Volver',
