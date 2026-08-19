@@ -261,41 +261,37 @@ export function HomePage() {
       <Section id="contact" eyebrow={UI_TEXT.sections.contact.eyebrow} title={UI_TEXT.sections.contact.title}>
         <div className="contact-panel">
           <p className="contact-intro">{UI_TEXT.contact.intro}</p>
-          <div className="contact-list">
-            {personal.email ? (
-              <CopyableContact
-                href={`mailto:${personal.email}`}
-                icon={<MailIcon />}
-                label={UI_TEXT.contact.email}
-                displayValue={personal.email}
-                copyValue={personal.email}
-              />
-            ) : null}
-            {personal.phone ? (
-              <CopyableContact
-                href={`tel:${personal.phone}`}
-                icon={<PhoneIcon />}
-                label={UI_TEXT.contact.phone}
-                displayValue={personal.phone}
-                copyValue={personal.phone}
-              />
-            ) : null}
-            {personal.linkedin ? (
-              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="contact-item social-contact linkedin-contact">
-                <span className="contact-icon" aria-hidden="true"><SocialIcon kind="linkedin" /></span>
-                <span>
-                  <strong>{UI_TEXT.contact.linkedin}</strong>
-                  <small>{personal.linkedin.replace('https://', '').replace('http://', '')}</small>
-                </span>
+          <div className="contact-links-grid">
+            <div className="contact-column">
+              {personal.email ? (
+                <CopyableContact
+                  href={`mailto:${personal.email}`}
+                  icon={<MailIcon />}
+                  label={UI_TEXT.contact.email}
+                  displayValue={personal.email}
+                  copyValue={personal.email}
+                />
+              ) : null}
+              {personal.phone ? (
+                <CopyableContact
+                  href={`tel:${personal.phone}`}
+                  icon={<PhoneIcon />}
+                  label={UI_TEXT.contact.phone}
+                  displayValue={personal.phone}
+                  copyValue={personal.phone}
+                />
+              ) : null}
+            </div>
+            {personal.github ? (
+              <a href={personal.github} target="_blank" rel="noreferrer" className="contact-brand-link github-brand">
+                <SocialIcon kind="github" />
+                <span>GitHub</span>
               </a>
             ) : null}
-            {personal.github ? (
-              <a href={personal.github} target="_blank" rel="noreferrer" className="contact-item social-contact github-contact">
-                <span className="contact-icon" aria-hidden="true"><SocialIcon kind="github" /></span>
-                <span>
-                  <strong>{UI_TEXT.contact.github}</strong>
-                  <small>{personal.github.replace('https://', '').replace('http://', '')}</small>
-                </span>
+            {personal.linkedin ? (
+              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="contact-brand-link linkedin-brand">
+                <SocialIcon kind="linkedin" />
+                <span>LinkedIn</span>
               </a>
             ) : null}
           </div>
