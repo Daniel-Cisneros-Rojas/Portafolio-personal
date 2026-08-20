@@ -263,37 +263,44 @@ export function HomePage() {
           <p className="contact-intro">{UI_TEXT.contact.intro}</p>
           <div className="contact-links-grid">
             <div className="contact-column">
+              
               {personal.email ? (
-                <CopyableContact
-                  href={`mailto:${personal.email}`}
-                  icon={<MailIcon />}
-                  label={UI_TEXT.contact.email}
-                  displayValue={personal.email}
-                  copyValue={personal.email}
-                />
+                <div className="email-contact">
+                  <CopyableContact
+                    href={`mailto:${personal.email}`}
+                    icon={<MailIcon />}
+                    label={UI_TEXT.contact.email}
+                    displayValue={personal.email}
+                    copyValue={personal.email}
+                  />
+                </div>
               ) : null}
-              {personal.phone ? (
-                <CopyableContact
-                  href={`tel:${personal.phone}`}
-                  icon={<PhoneIcon />}
-                  label={UI_TEXT.contact.phone}
-                  displayValue={personal.phone}
-                  copyValue={personal.phone}
-                />
+              {personal.github ? (
+                <a href={personal.github} target="_blank" rel="noreferrer" className="contact-brand-link github-brand">
+                  <SocialIcon kind="github" />
+                  <span>GitHub</span>
+                </a>
               ) : null}
             </div>
-            {personal.github ? (
-              <a href={personal.github} target="_blank" rel="noreferrer" className="contact-brand-link github-brand">
-                <SocialIcon kind="github" />
-                <span>GitHub</span>
-              </a>
-            ) : null}
-            {personal.linkedin ? (
-              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="contact-brand-link linkedin-brand">
-                <SocialIcon kind="linkedin" />
-                <span>LinkedIn</span>
-              </a>
-            ) : null}
+            <div className="contact-column">
+              {personal.phone ? (
+                <div className="phone-contact">
+                  <CopyableContact
+                    href={`tel:${personal.phone}`}
+                    icon={<PhoneIcon />}
+                    label={UI_TEXT.contact.phone}
+                    displayValue={personal.phone}
+                    copyValue={personal.phone}
+                  />
+                </div>
+              ) : null}
+              {personal.linkedin ? (
+                <a href={personal.linkedin} target="_blank" rel="noreferrer" className="contact-brand-link linkedin-brand">
+                  <SocialIcon kind="linkedin" />
+                  <span>LinkedIn</span>
+                </a>
+              ) : null}
+            </div>
           </div>
         </div>
       </Section>

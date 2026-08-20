@@ -569,7 +569,7 @@ main {
 
 .contact-links-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
   align-items: start;
 }
@@ -623,6 +623,80 @@ main {
 .contact-brand-link.linkedin-brand {
   background: #0a66c2;
   border-color: #0a66c2;
+  color: #ffffff;
+}
+
+.email-contact .contact-item-wrapper {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.email-contact .contact-item {
+  color: var(--color-foreground);
+}
+
+.email-contact .contact-icon {
+  background: rgba(23, 25, 28, 0.12);
+  color: var(--color-foreground);
+}
+
+.email-contact .contact-item strong {
+  color: rgba(23, 25, 28, 0.6);
+}
+
+.email-contact .contact-item small {
+  color: var(--color-foreground);
+}
+
+.email-contact .contact-copy-button {
+  color: var(--color-foreground);
+  border-left-color: rgba(23, 25, 28, 0.15);
+}
+
+.email-contact .contact-copy-button:hover {
+  background: rgba(23, 25, 28, 0.12);
+  color: var(--color-foreground);
+}
+
+.email-contact .contact-copy-button:active {
+  background: rgba(23, 25, 28, 0.2);
+  color: var(--color-foreground);
+}
+
+.phone-contact .contact-item-wrapper {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.phone-contact .contact-item {
+  color: #ffffff;
+}
+
+.phone-contact .contact-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.phone-contact .contact-item strong {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.phone-contact .contact-item small {
+  color: #ffffff;
+}
+
+.phone-contact .contact-copy-button {
+  color: #ffffff;
+  border-left-color: rgba(255, 255, 255, 0.2);
+}
+
+.phone-contact .contact-copy-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.phone-contact .contact-copy-button:active {
+  background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
 }
 
@@ -719,6 +793,14 @@ main {
 
 .contact-item-wrapper .contact-item:hover {
   background: var(--color-surface-elevated);
+}
+
+.email-contact .contact-item-wrapper .contact-item:hover {
+  background: rgba(23, 25, 28, 0.08);
+}
+
+.phone-contact .contact-item-wrapper .contact-item:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .contact-copy-button {
