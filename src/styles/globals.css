@@ -552,6 +552,15 @@ main {
   color: var(--color-primary);
 }
 
+.achievement-image {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  background: var(--color-surface-elevated);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
 .contact-panel {
   display: grid;
   gap: var(--space-5);

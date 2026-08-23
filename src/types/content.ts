@@ -60,6 +60,7 @@ export type AchievementEntry = {
   detailLabel?: string
   detailValue?: string
   year?: string
+  image?: string
 }
 
 export type ProjectImage = {

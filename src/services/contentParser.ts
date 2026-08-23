@@ -370,12 +370,14 @@ export function parseAchievements(raw: string): AchievementEntry[] {
       const title = normalizeHeadingValue(block.match(/^##\s+(.*)$/m)?.[1])
       const detailLabel = normalizeHeadingValue(block.match(/###\s*(Resultado|Participación)\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[2])
       const year = normalizeHeadingValue(block.match(/###\s*Año\s*\n\n([\s\S]*?)(?=\n###\s|\n##\s|$)/)?.[1])
+      const imageRaw = (block.match(/###\s*Imagen\s*\n\n`?([^`\n]+)`?/) ?? block.match(/###\s*Imagen\s*\n\n([^\n]+)/))?.[1]?.trim()
 
       return {
         title,
         detailLabel: detailLabel || undefined,
         detailValue: detailLabel || undefined,
         year: year || undefined,
+        image: imageRaw ? resolveAssetPath(imageRaw) : undefined,
       }
     })
     .filter((entry) => Boolean(entry.title || entry.detailLabel || entry.detailValue || entry.year))

@@ -250,6 +250,7 @@ export function HomePage() {
         <div className="achievement-grid">
           {achievements.map((achievement) => (
             <article key={`${achievement.title}-${achievement.year ?? 'sin-año'}`} className="achievement-item">
+              {achievement.image ? <img className="achievement-image" src={achievement.image} alt={achievement.title} /> : null}
               <h3>{achievement.title}</h3>
               <p>{achievement.detailLabel}</p>
               <span>{achievement.year}</span>
