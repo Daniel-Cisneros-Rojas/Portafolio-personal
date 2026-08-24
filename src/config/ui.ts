@@ -1,3 +1,6 @@
+import cvSpanishPdf from '../../docs/cv/Daniel_Cisneros_Rojas_CV_Resume_ESP.pdf?url'
+import cvEnglishPdf from '../../docs/cv/Daniel_Cisneros_Rojas_CV_Resume_ENG.pdf?url'
+
 export const UI_TEXT = {
   navigation: {
     ariaLabel: 'Navegación principal',
@@ -11,8 +14,8 @@ export const UI_TEXT = {
   hero: {
     eyebrow: 'Desarrollador de software',
     actions: {
-      cvSpanish: { href: 'docs/cv/Daniel_Cisneros_Rojas_CV_Resume_ESP.pdf', label: 'Ver CV en español', variant: 'primary' },
-      cvEnglish: { href: 'docs/cv/Daniel_Cisneros_Rojas_CV_Resume_ENG.pdf', label: 'View CV in English', variant: 'secondary' },
+      cvSpanish: { href: cvSpanishPdf, label: 'Ver CV en español', variant: 'primary' },
+      cvEnglish: { href: cvEnglishPdf, label: 'View CV in English', variant: 'secondary' },
       githubLabel: 'GitHub',
       linkedinLabel: 'LinkedIn',
     },
