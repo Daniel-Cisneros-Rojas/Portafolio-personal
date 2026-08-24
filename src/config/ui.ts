@@ -11,8 +11,8 @@ export const UI_TEXT = {
   hero: {
     eyebrow: 'Desarrollador de software',
     actions: {
-      cvSpanish: { href: '/cv/Daniel_Cisneros_Rojas_CV_Resume_ESP.pdf', label: 'Ver CV en español', variant: 'primary' },
-      cvEnglish: { href: '/cv/Daniel_Cisneros_Rojas_CV_Resume_ENG.pdf', label: 'View CV in English', variant: 'secondary' },
+      cvSpanish: { href: 'docs/cv/Daniel_Cisneros_Rojas_CV_Resume_ESP.pdf', label: 'Ver CV en español', variant: 'primary' },
+      cvEnglish: { href: 'docs/cv/Daniel_Cisneros_Rojas_CV_Resume_ENG.pdf', label: 'View CV in English', variant: 'secondary' },
       githubLabel: 'GitHub',
       linkedinLabel: 'LinkedIn',
     },
