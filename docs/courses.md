@@ -94,6 +94,78 @@ https://www.credly.com/badges/f62f0192-652c-4a6b-a864-863c55bedf69/public_url
 
 ---
 
+## Google Cloud
+
+### Google Cloud Computing Foundations Certificate
+
+**Institución:** Google Cloud
+
+**Tipo:** Curso
+
+**Verificación:**  
+https://www.credly.com/badges/a780a53e-62d5-4973-af0f-0b0ed70fcf83/public_url
+
+**Insignia:**  
+`/images/courses/google_badges/google-cloud-computing-foundations-certificate.png`
+
+---
+
+### Build a Secure Google Cloud Network
+
+**Institución:** Google Cloud
+
+**Tipo:** Curso
+
+**Verificación:**  
+https://www.credly.com/badges/e8bdf4d4-d91e-4dc2-a417-e80b6ff0a5d1/public_url
+
+**Insignia:**  
+`/images/courses/google_badges/build-a-secure-google-cloud-network-skill-badge.png`
+
+---
+
+### Implement Load Balancing on Compute Engine
+
+**Institución:** Google Cloud
+
+**Tipo:** Curso
+
+**Verificación:**  
+https://www.credly.com/badges/236eecac-685a-4e55-9705-83cc03c521ce/public_url
+
+**Insignia:**  
+`/images/courses/google_badges/implement-load-balancing-on-compute-engine-skill-ba.png`
+
+---
+
+### Prepare Data for ML APIs on Google Cloud
+
+**Institución:** Google Cloud
+
+**Tipo:** Curso
+
+**Verificación:**  
+https://www.credly.com/badges/59e3fea6-c5a9-4807-968b-61193354d59b/public_url
+
+**Insignia:**  
+`/images/courses/google_badges/prepare-data-for-ml-apis-on-google-cloud-skill-badg.png`
+
+---
+
+### Prompt Design in Vertex AI
+
+**Institución:** Google Cloud
+
+**Tipo:** Curso
+
+**Verificación:**  
+https://www.credly.com/badges/6bbd58eb-a74b-4eea-9e80-fd5be8dbba41/public_url
+
+**Insignia:**  
+`/images/courses/google_badges/prompt-design-in-vertex-ai-skill-badge.png`
+
+---
+
 ## Formación Adicional
 
 ### Administrador de Bases de Datos Relacionales
