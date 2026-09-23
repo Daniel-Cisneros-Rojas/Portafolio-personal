@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
+import { BackgroundGears } from './components/background/BackgroundGears'
 import { HomePage } from './pages/HomePage'
 import { ProjectPage } from './pages/ProjectPage'
 import { NotFoundPage } from './pages/NotFoundPage'
@@ -28,6 +29,7 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <div className="app-shell">
+        <BackgroundGears />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/projects/:slug" element={<ProjectPage />} />

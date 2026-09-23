@@ -1094,3 +1094,44 @@ main {
     max-width: 100px;
   }
 }
+
+.background-gears {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.4;
+  color: var(--color-muted);
+}
+
+.background-gears .gear {
+  position: absolute;
+  will-change: transform;
+}
+
+.background-gears .gear path {
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.background-gears .gear-1 {
+  width: 44vmin;
+  height: 44vmin;
+  top: -7vmin;
+  right: -5vmin;
+}
+
+.background-gears .gear-2 {
+  width: 26vmin;
+  height: 26vmin;
+  left: -7vmin;
+  bottom: 7vh;
+}
+
+.background-gears .gear-3 {
+  width: 15vmin;
+  height: 15vmin;
+  left: 34vw;
+  top: 40vh;
+}
