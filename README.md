@@ -7,8 +7,7 @@ software.
 El proyecto busca ofrecer una experiencia moderna, profesional, responsive y
 accesible, siguiendo buenas prácticas actuales de desarrollo web.
 
-<img width="1603" height="836" alt="image" src="https://github.com/user-attachments/assets/07d57e6a-3243-4f36-9c60-f4342bf64f53" />
-
+<img width="1603" height="836" alt="image" src="https://github.com/user-attachments/assets/6c7fe605-2350-44c3-90ac-d3b0430c7859" />
 
 ## Tecnologías
 
