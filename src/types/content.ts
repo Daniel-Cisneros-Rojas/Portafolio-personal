@@ -25,6 +25,7 @@ export type PersonalProfile = {
   linkedin: string
   github: string
   summary: string
+  phrase?: string
   photo: string
 }
 

@@ -223,8 +223,37 @@ main {
 }
 
 .hero-copy h1 {
-  font-size: clamp(2.75rem, 6vw, 5rem);
-  letter-spacing: -0.06em;
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  max-width: 17ch;
+}
+
+.hero-copy h1 em {
+  font-style: normal;
+  color: var(--color-foreground);
+  background: var(--color-primary-wash);
+  border-radius: 0.15em;
+  padding: 0 0.08em;
+}
+
+.hero-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-foreground);
+}
+
+.hero-name::before {
+  content: '';
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 2px;
+  background: var(--color-primary);
 }
 
 .headline {

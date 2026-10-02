@@ -8,7 +8,7 @@ import { courses } from '../content/courses'
 import { education } from '../content/education'
 import { experience } from '../content/experience'
 import { personal } from '../content/personal'
-import { profileSummary } from '../content/profile'
+import { profile } from '../content/profile'
 import { projects } from '../content/projects'
 import { skills } from '../content/skills'
 import { resolveAssetPath } from '../services/assetResolver'
@@ -56,6 +56,15 @@ function PhoneIcon() {
   )
 }
 
+function renderPhrase(phrase: string) {
+  return phrase.split(/(\*[^*]+\*)/g).map((part, index) => {
+    if (part.length > 2 && part.startsWith('*') && part.endsWith('*')) {
+      return <em key={index}>{part.slice(1, -1)}</em>
+    }
+    return <span key={index}>{part}</span>
+  })
+}
+
 export function HomePage() {
   const [expandedProjects, setExpandedProjects] = useState(false)
 
@@ -85,9 +94,19 @@ export function HomePage() {
       <section className="hero-section" id="home">
         <div className="hero-copy">
           <p className="eyebrow">{UI_TEXT.hero.eyebrow}</p>
-          <h1>{personal.name}</h1>
-          <p className="headline">{personal.title}</p>
-          <p className="lead">{profileSummary}</p>
+          {profile.phrase ? (
+            <>
+              <h1>{renderPhrase(profile.phrase)}</h1>
+              <p className="hero-name">{profile.name}</p>
+              <p className="headline">{profile.title}</p>
+            </>
+          ) : (
+            <>
+              <h1>{profile.name}</h1>
+              <p className="headline">{profile.title}</p>
+            </>
+          )}
+          <p className="lead">{profile.summary}</p>
 
           <div className="hero-actions">
             {heroLinks.map((link) => (

@@ -12,6 +12,7 @@
   --color-muted: var(--color-gray);
   --color-border: var(--color-light-gray);
   --color-primary: var(--color-cyan);
+  --color-primary-wash: #D9F3F3;
   --color-accent: var(--color-coral);
 
   --font-primary: 'Titillium Web', 'Segoe UI', sans-serif;

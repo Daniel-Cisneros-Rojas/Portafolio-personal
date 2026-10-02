@@ -32,6 +32,13 @@ const parseList = (content: string): string[] =>
 
 const normalizeHeadingValue = (value?: string): string => stripMarkdown((value ?? '').trim())
 
+const normalizePhrase = (value?: string): string =>
+  (value ?? '')
+    .trim()
+    .replace(/^["'«»“”]+/, '')
+    .replace(/["'«»“”]+$/, '')
+    .trim()
+
 const normalizeSectionKey = (value: string): string => value
   .replace(/^\uFEFF/, '')
   .replace(/\u00A0/g, ' ')
@@ -268,6 +275,7 @@ export function parseProfile(raw: string): ProfileContent {
 
   const summary = stripMarkdown(
     source
+      .replace(/#\s*Frase[\s\S]*?(?=\n##\s|$)/gi, '')
       .replace(/^#.*$/gm, '')
       .replace(/##\s*Fotografía[\s\S]*$/gi, '')
       .replace(/^\s*`?\/images\/[A-Za-z0-9._\-/]+`?\s*$/gm, '')
@@ -275,6 +283,7 @@ export function parseProfile(raw: string): ProfileContent {
       .replace(/\s{2,}/g, ' ')
       .trim(),
   )
+  const phrase = normalizePhrase(source.match(/#\s*Frase\s*\n+\s*([^\n]+)/i)?.[1])
   const photoMatch = source.match(/##\s+Fotografía\s*\n\n`?([^`\n]+)`?/) ?? source.match(/##\s+Fotografía\s*\n\n([^\n]+)/)
   const photo = resolveAssetPath(photoMatch?.[1] || '/images/profile/foto-personal.png')
 
@@ -287,6 +296,7 @@ export function parseProfile(raw: string): ProfileContent {
     linkedin,
     github,
     summary,
+    phrase,
     photo,
   }
 }
