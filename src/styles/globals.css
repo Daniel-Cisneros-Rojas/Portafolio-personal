@@ -224,17 +224,18 @@ main {
 
 .hero-copy h1 {
   font-size: clamp(2rem, 4.2vw, 3.4rem);
-  line-height: 1.08;
+  line-height: 1.15;
   letter-spacing: -0.03em;
-  max-width: 17ch;
 }
 
 .hero-copy h1 em {
   font-style: normal;
   color: var(--color-foreground);
-  background: var(--color-primary-wash);
-  border-radius: 0.15em;
-  padding: 0 0.08em;
+  background: linear-gradient(to top, var(--color-primary-wash) 0 0.34em, transparent 0.34em);
+  border-radius: 0.1em;
+  padding: 0 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .hero-name {
