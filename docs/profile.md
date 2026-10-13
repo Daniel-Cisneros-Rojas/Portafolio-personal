@@ -10,4 +10,4 @@ resolver necesidades concretas.
 
 ## Fotografía
 
-`/images/profile/foto-personal.png`
+`/images/profile/foto-personal.jpeg`

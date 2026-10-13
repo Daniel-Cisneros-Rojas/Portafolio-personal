@@ -285,7 +285,7 @@ export function parseProfile(raw: string): ProfileContent {
   )
   const phrase = normalizePhrase(source.match(/#\s*Frase\s*\n+\s*([^\n]+)/i)?.[1])
   const photoMatch = source.match(/##\s+Fotografía\s*\n\n`?([^`\n]+)`?/) ?? source.match(/##\s+Fotografía\s*\n\n([^\n]+)/)
-  const photo = resolveAssetPath(photoMatch?.[1] || '/images/profile/foto-personal.png')
+  const photo = resolveAssetPath(photoMatch?.[1] || '/images/profile/foto-personal.jpeg')
 
   return {
     name,
